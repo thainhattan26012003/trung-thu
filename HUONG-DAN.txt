@@ -1,0 +1,51 @@
+HƯỚNG DẪN SỬA VÀ CẬP NHẬT THIỆP TRUNG THU
+Link thiệp: https://tata-trung-thu-vui-ve.netlify.app
+
+================================================================
+1. SỬA NỘI DUNG
+================================================================
+Mở file thiep-trung-thu\config.js bằng Notepad (chuột phải > Open with > Notepad) hoặc VS Code.
+Chỉ sửa chữ nằm giữa hai dấu nháy.
+
+  herName    tên / biệt danh cô ấy (hiện ở "Gửi em,", tiêu đề trang, cuối thư)
+  fromName   tên bạn, ký cuối thư
+  poem       các câu hiện dần khi giữ vầng trăng (từ 1 đến 6 câu, câu dài được ở lại lâu hơn)
+  secrets    6 lời nhắn khi chạm vào đồ vật, mỗi cái có title (tiêu đề) và text (lời nhắn):
+               moon = vầng trăng, cakes = mâm cỗ, lantern = dây đèn lồng,
+               lion = múa lân, rabbit = Thỏ Ngọc, star = đèn ông sao
+  letter     lá thư mở khi tìm đủ 6 điều bí mật. Cách một dòng trống = sang đoạn mới.
+  gift.intro lời nhắn hiện ra khi chạm vào hộp quà (hoặc nút quà trên cùng)
+  photo      ảnh hai đứa hiện trong vầng trăng: chép ảnh vào thư mục thiep-trung-thu,
+             rồi sửa thành photo: 'ten-anh.jpg'. Nên để ảnh dưới khoảng 1 MB.
+  music      bài hát riêng: chép file mp3 vào thư mục thiep-trung-thu,
+             rồi sửa thành music: 'ten-bai.mp3'. Nên dưới khoảng 5 MB.
+
+Hai điều để không làm hỏng file:
+  - Không gõ dấu nháy đơn ' bên trong câu (cần thì dùng ’). Trong lá thư tránh dấu `.
+  - Giữ nguyên dấu phẩy cuối dòng và các dấu ngoặc [ ] { }.
+Gõ sai cũng không sao: hai file .cmd bên dưới sẽ kiểm tra trước và chỉ ra dòng bị lỗi.
+
+================================================================
+2. XEM THỬ TRÊN MÁY
+================================================================
+Bấm đúp xem-thu.cmd. Nó kiểm tra config.js rồi mở trình duyệt ở http://localhost:8765
+  - Thêm #skip vào cuối link để vào thẳng cảnh 3D, #all để mở khóa luôn lá thư.
+  - Xem xong thì đóng cửa sổ đen "Xem thu thiep".
+  - Không bấm đúp index.html để xem được, vì trình duyệt chặn code khi mở file trực tiếp.
+
+================================================================
+3. ĐƯA BẢN MỚI LÊN MẠNG (thiệp không cần build)
+================================================================
+Bấm đúp dua-len-mang.cmd. Nó kiểm tra config.js trước; nếu sai thì dừng lại, không đưa bản hỏng lên.
+Xong là link cập nhật ngay: không đổi link, không cần gửi lại. Cô ấy mở lại link là thấy bản mới.
+  - Máy này đã đăng nhập Netlify nên chạy được luôn. Ở máy khác, lần đầu sẽ mở trình duyệt để đăng nhập.
+  - Cách khác: vào https://app.netlify.com/projects/tata-trung-thu-vui-ve/deploys
+    rồi kéo cả thư mục thiep-trung-thu thả vào ô kéo thả trên trang.
+
+================================================================
+4. THẺ XEM TRƯỚC KHI GỬI LINK (không bắt buộc)
+================================================================
+Dòng chữ "Có một tấm thiệp gửi em" nằm trong index.html (dòng có og:title), ảnh là og.jpg.
+Muốn ảnh có tên cô ấy: sửa herName, chạy xem-thu.cmd, mở http://localhost:8765/tools/anh-xem-truoc.html,
+bấm "Tải ảnh og.jpg" rồi chép đè file vừa tải vào thư mục thiep-trung-thu.
+Lưu ý: Messenger và Zalo nhớ thẻ xem trước từ lần gửi link đầu tiên, nên chỉ có tác dụng nếu sửa trước lần đó.

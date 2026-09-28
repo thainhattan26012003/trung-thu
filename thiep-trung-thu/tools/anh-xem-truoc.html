@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ảnh Xem Trước Thiệp</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500&family=Cormorant+Garamond:ital,wght@1,600&family=Dancing+Script:wght@700&display=swap">
+<style>
+  body { margin: 0; padding: 24px 16px; background: #070b1f; color: #fff4d6; font: 15px/1.6 'Be Vietnam Pro', system-ui, sans-serif;
+    display: grid; justify-items: center; gap: 14px; }
+  canvas { width: min(900px, 100%); height: auto; border-radius: 12px; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); }
+  a { color: #f2b84b; font-weight: 500; }
+  p { margin: 0; max-width: 65ch; text-align: center; color: rgba(255, 244, 214, .75); }
+</style>
+</head>
+<body>
+<!-- Tạo ảnh hiện ra khi gửi link qua Messenger/Zalo (1200×630). Mở trang này qua máy chủ cục bộ, tải ảnh về, đặt cạnh index.html. -->
+<canvas id="og" width="1200" height="630"></canvas>
+<a id="dl" download="og.jpg" href="#">Tải ảnh og.jpg</a>
+<p>Đặt og.jpg cạnh index.html. Tên trong ảnh lấy từ config.js, sửa tên xong thì mở lại trang này để tạo ảnh mới.</p>
+<script type="module">
+import { CONFIG } from '../config.js';
+import { rng, makeMoonCanvas, makeCloudCanvas } from '../js/art.js';
+
+function lantern(g, x, y, s) {
+  const glow = g.createRadialGradient(x, y + 10 * s, 0, x, y + 10 * s, 64 * s);
+  glow.addColorStop(0, 'rgba(255,190,110,0.5)'); glow.addColorStop(1, 'rgba(255,190,110,0)');
+  g.fillStyle = glow; g.fillRect(x - 64 * s, y - 54 * s, 128 * s, 128 * s);
+  const gr = g.createLinearGradient(0, y - 22 * s, 0, y + 22 * s);
+  gr.addColorStop(0, '#d9542b'); gr.addColorStop(0.55, '#ffb347'); gr.addColorStop(1, '#fff3c4');
+  g.fillStyle = gr;
+  g.beginPath();
+  g.moveTo(x - 14 * s, y - 22 * s); g.lineTo(x + 14 * s, y - 22 * s); g.lineTo(x + 11 * s, y + 22 * s); g.lineTo(x - 11 * s, y + 22 * s);
+  g.closePath(); g.fill();
+}
+
+async function renderOG() {
+  await Promise.all([
+    document.fonts.load("italic 600 76px 'Cormorant Garamond'"),
+    document.fonts.load("700 104px 'Dancing Script'"),
+    document.fonts.load("500 22px 'Be Vietnam Pro'"),
+    document.fonts.load("400 24px 'Be Vietnam Pro'"),
+  ]);
+  const W = 1200, H = 630, c = document.getElementById('og'), g = c.getContext('2d');
+  const mx = 875, my = 300, mr = 200;
+  const bg = g.createRadialGradient(mx, my, 0, mx, my, 900);
+  bg.addColorStop(0, '#1d2358'); bg.addColorStop(0.45, '#0e1336'); bg.addColorStop(1, '#05081a');
+  g.fillStyle = bg; g.fillRect(0, 0, W, H);
+  const R = rng(7);
+  g.fillStyle = '#ffffff';
+  for (let i = 0; i < 320; i++) {
+    g.globalAlpha = 0.25 + R() * 0.7;
+    g.beginPath(); g.arc(R() * W, R() * H, 0.5 + Math.pow(R(), 3) * 1.8, 0, Math.PI * 2); g.fill();
+  }
+  g.globalAlpha = 1;
+  const gl = g.createRadialGradient(mx, my, mr * 0.85, mx, my, mr * 2.8);
+  gl.addColorStop(0, 'rgba(255,226,160,0.45)'); gl.addColorStop(0.4, 'rgba(255,196,120,0.12)'); gl.addColorStop(1, 'rgba(255,196,120,0)');
+  g.fillStyle = gl; g.fillRect(0, 0, W, H);
+  g.drawImage(makeMoonCanvas(800), mx - mr, my - mr, mr * 2, mr * 2);
+  g.globalAlpha = 0.34; g.drawImage(makeCloudCanvas(512, 200, 3), mx - 430, my + 95, 780, 300);
+  g.globalAlpha = 0.2; g.drawImage(makeCloudCanvas(512, 200, 11), -140, 390, 720, 270);
+  g.globalAlpha = 1;
+  [[650, 140, 1], [705, 480, 0.8], [1115, 560, 0.9], [590, 560, 0.55], [1125, 105, 0.7]].forEach(([x, y, s]) => lantern(g, x, y, s));
+
+  g.textBaseline = 'alphabetic';
+  g.fillStyle = '#f2b84b'; g.font = "500 22px 'Be Vietnam Pro'";
+  if ('letterSpacing' in g) g.letterSpacing = '5px';
+  g.fillText('RẰM THÁNG TÁM · BÍNH NGỌ 2026', 90, 205);
+  if ('letterSpacing' in g) g.letterSpacing = '0px';
+  g.shadowColor = 'rgba(7,11,31,0.9)'; g.shadowBlur = 24;
+  g.fillStyle = '#fff4d6'; g.font = "italic 600 76px 'Cormorant Garamond'";
+  g.fillText('Có một tấm thiệp', 84, 305);
+  g.shadowColor = 'rgba(255,200,120,0.45)'; g.shadowBlur = 30;
+  g.fillStyle = '#ffe3a3'; g.font = "700 104px 'Dancing Script'";
+  g.fillText(`gửi ${CONFIG.herName}`, 92, 425);
+  g.shadowBlur = 0;
+  g.fillStyle = 'rgba(255,244,214,0.72)'; g.font = "400 24px 'Be Vietnam Pro'";
+  g.fillText('Chạm để mở thiệp  →', 94, 505);
+  return c;
+}
+
+window.renderOG = renderOG;
+const canvas = await renderOG();
+canvas.toBlob((b) => { document.getElementById('dl').href = URL.createObjectURL(b); }, 'image/jpeg', 0.9);
+</script>
+</body>
+</html>

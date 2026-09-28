@@ -1,0 +1,27 @@
+plugins = []
+headers = []
+redirects = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "C:\\Users\\thain\\AppData\\Roaming\\Claude\\scratch-workspaces\\9e991df3-c270-43e8-b508-409625f66f2e\\a567a37e-d5a5-4692-be38-2897964e84c8\\scratch-2026-09-26-a28c02\\public"
+publishOrigin = "ui"
+commandOrigin = "ui"
+command = "hugo"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
